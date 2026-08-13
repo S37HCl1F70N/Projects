@@ -1,0 +1,2 @@
+# Network Black Box 0.1.0 has no third-party Python runtime dependencies.
+# Python 3.11+ standard library only.
