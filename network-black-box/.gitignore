@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.db
+*.db-wal
+*.db-shm
+.venv/
+venv/
+.coverage
+htmlcov/
+*.log
+*.zip
+*.tar.gz
