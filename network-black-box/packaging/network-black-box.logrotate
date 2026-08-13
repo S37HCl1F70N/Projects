@@ -1,0 +1,10 @@
+/var/log/network-black-box/*.log {
+    weekly
+    rotate 3
+    size 5M
+    missingok
+    notifempty
+    compress
+    delaycompress
+    copytruncate
+}
