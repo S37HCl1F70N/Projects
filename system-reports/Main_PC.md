@@ -8,7 +8,7 @@ Source: user-supplied `Main_PC-system-info.json`, collected using Windows CIM, W
 - **OS:** Windows 11 Home, version 25H2, full build **26200.9457**, 64-bit.
 - **CPU:** AMD Ryzen 7 3700X, 8 cores / 16 logical processors.
 - **RAM:** 32 GiB installed across two 16 GiB modules; Windows reports 31.92 GiB total physical memory.
-- **GPU:** NVIDIA GeForce RTX 2080.
+- **GPU:** NVIDIA GeForce RTX 2080 (Turing), 8 GiB VRAM.
 - **Motherboard:** MSI MPG X570 GAMING PRO CARBON WIFI (MS-7B93), revision 1.0.
 - **Storage:** two reported disks, approximately 2,328.77 GiB combined.
 
@@ -54,7 +54,65 @@ Both module records report `DIMM 1`; the upload does not establish their distinc
 | --- | --- | --- | --- |
 | NVIDIA GeForce RTX 2080 | 32.0.16.1088 | 2026-07-21T19:00:00-05:00 | 1920 × 1080 |
 
-Dedicated VRAM, monitor models, refresh rates, and additional displays were not collected.
+### Extended NVIDIA Diagnostics
+
+Source: user-supplied `Main_PC-GPU.txt`, produced by `nvidia-smi -q`. The log reports **October 8, 2026, 12:21:41 PM** without a timezone; interpreted as CDT using the earlier Main_PC collection. One GPU was detected.
+
+| Property | Reported value |
+| --- | --- |
+| Product / architecture | NVIDIA GeForce RTX 2080 / Turing |
+| NVIDIA kernel-mode driver (KMD) | 610.88 |
+| CUDA user-mode driver (UMD) version | 13.3 |
+| Windows driver model | WDDM |
+| VBIOS | 90.04.23.40.14 |
+| GPU part number | 1E87-400-A1 |
+| Display | Attached; active |
+| Compute mode | Default |
+| Virtualization mode | None |
+| PCI device / subsystem IDs | 0x1E8710DE / 0x22873842 |
+| PCIe generation | Current: 3; GPU maximum: 3; host maximum: 4 |
+| PCIe link width | Current: x16; maximum: x16 |
+| PCIe replay count / rollovers | 0 / 0 |
+| Dedicated VRAM | 8192 MiB (8 GiB) |
+| VRAM reserved / used / free | 205 / 495 / 7493 MiB |
+| BAR1 aperture total / used / free | 256 / 2 / 254 MiB |
+
+CUDA UMD 13.3 describes the driver-reported CUDA compatibility level; it does not prove that the CUDA Toolkit is installed. The NVIDIA version 610.88 and original Windows driver version 32.0.16.1088 are distinct version formats. BAR1 is an address-mapping aperture, not additional VRAM; its size alone does not establish the platform's Resizable BAR setting.
+
+### GPU Snapshot: Load, Temperature, and Power
+
+| Reading | Value at collection |
+| --- | --- |
+| Performance state | P8; idle clock-event reason active |
+| GPU utilization | 1% |
+| Memory utilization | 3% (activity metric, not VRAM capacity used) |
+| Encoder / decoder utilization | 0% / 0% |
+| Active encoder / frame-buffer capture sessions | 0 / 0 |
+| Fan speed | 0% |
+| GPU temperature | 35 °C |
+| Target / maximum operating temperature | 83 / 88 °C |
+| Slowdown / shutdown temperature | 97 / 100 °C |
+| Instantaneous power draw | 16.34 W |
+| Current / requested / default power limit | 260 / 260 / 260 W |
+| Reported adjustable power-limit range | 105–338 W |
+| Software power cap / thermal slowdown | Not active / not active |
+| Hardware thermal / power-brake slowdown | Not active / not active |
+| GPU recovery action | None |
+
+The readings reflect an idle or light-load snapshot, not a stress test. A 0% fan reading at 35 °C alone does not indicate a cooling fault. Power-limit values describe this board's reported configuration, not measured peak draw or a recommendation to change settings. No active power or thermal slowdown was reported at collection; this does not establish sustained-load stability.
+
+### GPU Clock Readings
+
+| Clock domain | Current (MHz) | Reported maximum (MHz) |
+| --- | --- | --- |
+| Graphics | 300 | 2190 |
+| SM | 300 | 2190 |
+| Memory | 405 | 7000 |
+| Video | 540 | 1950 |
+
+Reported maximum clocks are not guaranteed sustained clocks or a measured overclock. Memory values are reproduced in NVIDIA's reported units without converting them to an effective transfer rate.
+
+Memory temperature, ECC counters, and several enterprise features were reported as unavailable (`N/A`). Monitor models, refresh rates, memory bus width/type, CUDA-core count, and the exact board-partner retail model were not established by these uploads. GPU UUID, serial number, GPU PDI, PCI bus location, and process details were omitted from the published report.
 
 ## Storage Devices
 
@@ -101,4 +159,4 @@ These are the five entries returned in the supplied `Get-HotFix` collection. Tha
 
 ## Scope and Missing Information
 
-This report covers only Main_PC. It contains no serial numbers, product keys, or network addresses from the collection. The following were not captured: TPM and Secure Boot status, activation status, GPU memory, storage health, peripherals, power supply, cooling, chassis, or current temperatures. Unknown values and collection limitations have been retained rather than inferred.
+This report covers only Main_PC. It contains no serial numbers, product keys, or network addresses from the collection. The following were not captured: TPM and Secure Boot status, activation status, storage health, peripherals, power supply, cooling hardware, chassis, or CPU/system temperatures. GPU memory and GPU temperature are documented above from the later NVIDIA snapshot. Unknown values and collection limitations have been retained rather than inferred.
