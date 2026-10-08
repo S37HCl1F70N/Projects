@@ -31,7 +31,7 @@
 | Chipset/platform devices | Intel 7th-generation host bridge and HM175/QM175-class platform controllers; Intel SATA AHCI, SMBus, USB 3.x, thermal, and Management Engine interfaces |
 | Thunderbolt | Intel DSL6340 Alpine Ridge Thunderbolt 3 bridge/controller and NHI detected |
 
-The CPU supports common x86-64 features including SSE4.1/4.2, AES-NI, AVX/AVX2, FMA, and VT-x. Linux reports four online logical CPUs; this describes the current firmware/OS-visible configuration, not necessarily the processor's maximum capability.
+The CPU supports common x86-64 features including SSE4.1/4.2, AES-NI, AVX/AVX2, FMA, and VT-x. The i7-7700HQ supports Intel Hyper-Threading (4 cores / 8 threads), but this machine currently exposes only four logical CPUs to Linux (one per core). The CPU advertises the `ht` capability, yet Linux reports only CPUs 0-3 as possible, present, and online, with each core's thread-sibling list containing only itself. The active kernel command line has no `nosmt` or CPU-count limit, and the machine is not detected as virtualized. This points to Hyper-Threading being disabled or hidden by firmware/BIOS as the most likely explanation; the exact firmware setting cannot be confirmed from the running OS alone. Check BIOS/UEFI setup for an Intel Hyper-Threading/Logical Processor setting, enable it if disabled, save, and reboot; then confirm `lscpu` shows 8 CPUs and sibling pairs (for example `0,4`). If that setting is already enabled, a firmware update or firmware reset may merit investigation.
 
 ## Memory
 
