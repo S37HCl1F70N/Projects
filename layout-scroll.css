@@ -1,0 +1,432 @@
+
+/* ============================================================
+   WORLDWATCH // SCROLLABLE COMMAND CENTER LAYOUT
+   FILE: layout-scroll.css
+
+   PURPOSE:
+   - Enable whole-page vertical scrolling
+   - Preserve existing tactical dashboard grid
+   - Expand INFRA to natural content height
+   - Retain panel expansion and responsive layout
+   ============================================================ */
+
+
+/* ============================================================
+   01 // ENABLE PAGE SCROLLING
+   ============================================================ */
+
+html,
+body {
+    height: auto !important;
+    min-height: 100% !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    margin: 0;
+}
+
+
+/* ============================================================
+   02 // MAIN DASHBOARD SHELL
+   ============================================================ */
+
+#worldwatch-app.console-shell {
+
+    width: 100% !important;
+    max-width: none !important;
+
+    height: auto !important;
+    min-height: 100vh !important;
+
+    overflow: visible !important;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr);
+
+    grid-template-rows:
+        auto
+        auto
+        auto
+        minmax(620px, 70vh)
+        minmax(240px, 28vh)
+        auto
+        auto !important;
+
+    gap: 8px;
+
+    align-content: start;
+
+    padding: 10px 10px 18px;
+}
+
+
+/* ============================================================
+   03 // PRIMARY MONITOR GRID
+
+   NEWS | GLOBAL MAP | EVENT MONITOR
+   ============================================================ */
+
+#worldwatch-app .operations-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(225px, 23%)
+        minmax(0, 1fr)
+        minmax(265px, 25%);
+
+    grid-template-rows: minmax(0, 1fr);
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+
+    gap: 8px;
+}
+
+
+/* ============================================================
+   04 // SECONDARY MONITOR GRID
+
+   AIR | SEA | COMMS | SPACE
+   ============================================================ */
+
+#worldwatch-app .secondary-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+
+    gap: 8px;
+}
+
+
+/* ============================================================
+   05 // INFRASTRUCTURE PANEL
+
+   KEY FIX:
+   - No artificial height restriction
+   - Natural content height
+   - Entire page scrolls past this section
+   ============================================================ */
+
+#worldwatch-app #infrastructure-panel:not(.panel-expanded) {
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    height: auto !important;
+    min-height: 300px !important;
+    max-height: none !important;
+
+    overflow: visible !important;
+
+    margin: 0;
+}
+
+
+/* Let the INFRA content determine panel height */
+
+#worldwatch-app
+#infrastructure-panel:not(.panel-expanded)
+.infrastructure-feed {
+
+    display: block;
+
+    flex: 0 0 auto !important;
+
+    width: 100%;
+
+    height: auto !important;
+    min-height: 200px;
+
+    max-height: none !important;
+
+    overflow: visible !important;
+}
+
+
+/* Ensure generated infrastructure content is readable */
+
+#worldwatch-app
+#infrastructure-panel
+.ww-inf-root {
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 12px;
+}
+
+
+/* Give the provider section adequate spacing */
+
+#worldwatch-app
+#infrastructure-panel
+.ww-inf-service {
+
+    padding: 10px;
+    margin: 8px 0;
+}
+
+
+/* Improve readability of news items */
+
+#worldwatch-app
+#infrastructure-panel
+.ww-inf-item {
+
+    padding: 10px 4px;
+
+    line-height: 1.6;
+}
+
+
+/* Keep the INFRA footer in normal document flow */
+
+#worldwatch-app
+#infrastructure-panel:not(.panel-expanded)
+.panel-footer {
+
+    flex: 0 0 auto;
+
+    margin-top: 8px;
+}
+
+
+/* ============================================================
+   06 // SYSTEM FOOTER
+
+   The bottom of the page must remain accessible.
+   ============================================================ */
+
+#worldwatch-app .system-footer {
+
+    position: relative;
+
+    min-height: 35px;
+
+    padding: 8px 12px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 0;
+}
+
+
+/* ============================================================
+   07 // TACTICAL MAP
+
+   Keep map sized properly when scrolling.
+   ============================================================ */
+
+#worldwatch-app #map-panel .map-container {
+
+    flex: 1 1 auto;
+
+    min-height: 0;
+
+    overflow: hidden;
+}
+
+#worldwatch-app #world-map {
+
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+/* ============================================================
+   08 // MONITOR PANEL SCROLLING
+
+   Primary and secondary panels retain their
+   independent scrolling where appropriate.
+   ============================================================ */
+
+#worldwatch-app #news-feed,
+#worldwatch-app #events-panel .event-sections,
+#worldwatch-app .secondary-panel .panel-content {
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    scrollbar-width: thin;
+    scrollbar-color: #315b3e #07140c;
+}
+
+
+/* ============================================================
+   09 // SCROLLBAR APPEARANCE
+   ============================================================ */
+
+html {
+
+    scrollbar-color: #315b3e #050b08;
+    scrollbar-width: thin;
+}
+
+
+/* ============================================================
+   10 // FULLSCREEN MODE
+
+   When WORLDWATCH itself enters fullscreen,
+   scroll its content inside the fullscreen viewport.
+   ============================================================ */
+
+#worldwatch-app.console-shell:fullscreen {
+
+    height: 100vh !important;
+    max-height: 100vh !important;
+
+    min-height: 0 !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    align-content: start;
+
+    background: #050b08;
+}
+
+
+/* ============================================================
+   11 // SMALLER DESKTOPS AND TABLETS
+   ============================================================ */
+
+@media (max-width: 1050px) {
+
+    #worldwatch-app.console-shell {
+
+        grid-template-rows:
+            auto auto auto auto auto auto auto !important;
+    }
+
+    #worldwatch-app .operations-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        grid-template-rows:
+            380px
+            350px;
+
+        height: auto;
+        overflow: visible;
+    }
+
+    #worldwatch-app #map-panel {
+
+        grid-column: 1 / -1;
+        grid-row: 1;
+
+        height: 380px;
+    }
+
+    #worldwatch-app #news-panel {
+
+        grid-column: 1;
+        grid-row: 2;
+
+        height: 350px;
+    }
+
+    #worldwatch-app #events-panel {
+
+        grid-column: 2;
+        grid-row: 2;
+
+        height: 350px;
+    }
+
+    #worldwatch-app .secondary-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        grid-template-rows:
+            220px 220px;
+
+        height: auto;
+
+        overflow: visible;
+    }
+
+}
+
+
+/* ============================================================
+   12 // MOBILE
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+    #worldwatch-app.console-shell {
+
+        padding: 5px 5px 16px;
+
+        gap: 6px;
+    }
+
+    #worldwatch-app .operations-grid {
+
+        display: flex;
+        flex-direction: column;
+
+        height: auto;
+
+        overflow: visible;
+    }
+
+    #worldwatch-app #map-panel {
+
+        width: 100%;
+        height: 380px;
+    }
+
+    #worldwatch-app #news-panel {
+
+        width: 100%;
+        height: 360px;
+    }
+
+    #worldwatch-app #events-panel {
+
+        width: 100%;
+        height: 410px;
+    }
+
+    #worldwatch-app .secondary-grid {
+
+        grid-template-columns: minmax(0, 1fr);
+
+        grid-template-rows:
+            repeat(4, 210px);
+
+        height: auto;
+
+        overflow: visible;
+    }
+
+    #worldwatch-app #infrastructure-panel:not(.panel-expanded) {
+
+        min-height: 300px !important;
+    }
+
+}

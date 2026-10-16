@@ -1,0 +1,1128 @@
+
+/* ============================================================
+   WORLDWATCH v1.0 // NORAD / WARGAMES DISPLAY
+
+   Includes:
+   - Original tactical console styling
+   - Dashboard panels
+   - Newswire
+   - Global map
+   - Event monitor
+   - Secondary operations consoles
+   - FULL PANEL EXPANSION REPAIR
+   ============================================================ */
+
+:root {
+  --bg: #050b08;
+  --panel: #09130d;
+  --header: #102217;
+  --edge: #315b3e;
+
+  --green: #73db94;
+  --bright: #a0ffb9;
+  --text: #c5dccb;
+  --muted: #8da895;
+
+  --amber: #e8bf62;
+  --orange: #f28c52;
+  --red: #e84949;
+
+  --font:
+    Consolas,
+    "Lucida Console",
+    "Courier New",
+    monospace;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.45 var(--font);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+a {
+  color: var(--green);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--bright);
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h2,
+h3 {
+  font-size: 11px;
+  letter-spacing: 0.4px;
+}
+
+/* ============================================================
+   MAIN CONSOLE SHELL
+   ============================================================ */
+
+.console-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   SYSTEM HEADER
+   ============================================================ */
+
+.system-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+  min-height: 78px;
+  padding: 10px 15px;
+
+  border: 1px solid #4a8b5c;
+  border-left: 4px solid var(--green);
+
+  background: #07110b;
+}
+
+.header-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.system-emblem {
+  display: grid;
+  place-items: center;
+
+  height: 43px;
+  width: 43px;
+  flex: none;
+
+  border: 2px solid var(--green);
+  border-radius: 50%;
+
+  color: var(--green);
+  font-size: 28px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 27px;
+  letter-spacing: 3px;
+
+  color: var(--bright);
+
+  line-height: 1.1;
+  text-shadow: 0 0 8px #73db9440;
+}
+
+.system-subtitle {
+  margin-top: 5px;
+
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.header-status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px 20px;
+}
+
+.header-status-item {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 70px;
+  gap: 3px;
+
+  font-weight: bold;
+}
+
+.status-label {
+  color: #688572;
+  font-size: 10px;
+}
+
+.digital-clock {
+  color: var(--bright);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* SYSTEM STATUS COLORS */
+
+.status-online,
+.status-active {
+  color: var(--green) !important;
+}
+
+.status-standby,
+.status-stale,
+.status-warning {
+  color: var(--amber) !important;
+}
+
+.status-error,
+.status-offline {
+  color: var(--red) !important;
+}
+
+/* ============================================================
+   BLUF / GLOBAL SITUATION
+   ============================================================ */
+
+.bluf-banner {
+  padding: 10px 14px;
+
+  border: 1px solid var(--edge);
+  border-left: 4px solid var(--amber);
+
+  background: #0b1c11;
+}
+
+.bluf-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.bluf-heading h2 {
+  margin: 0;
+  color: var(--amber);
+  font-size: 13px;
+}
+
+.bluf-banner p {
+  margin: 7px 0;
+}
+
+.bluf-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  color: #688572;
+  font-size: 10px;
+}
+
+.indicator-active {
+  color: var(--green);
+}
+
+.indicator-standby,
+.indicator-warning {
+  color: var(--amber);
+}
+
+.indicator-critical {
+  color: var(--red);
+}
+
+/* ============================================================
+   COMMAND TOOLBAR
+   ============================================================ */
+
+.command-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 7px;
+  padding: 6px 10px;
+
+  border: 1px solid var(--edge);
+  background: var(--panel);
+}
+
+.toolbar-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  gap: 5px;
+}
+
+.toolbar-label {
+  margin-right: 5px;
+  color: #688572;
+
+  font-size: 10px;
+  font-weight: bold;
+}
+
+/* ============================================================
+   COMMON BUTTONS
+   ============================================================ */
+
+.command-button,
+.filter-button,
+.panel-action,
+.quake-locate-button {
+  padding: 5px 8px;
+
+  border: 1px solid var(--edge);
+  border-radius: 0;
+
+  background: #0c1b11;
+  color: var(--muted);
+
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.command-button:hover,
+.filter-button:hover,
+.panel-action:hover,
+.quake-locate-button:hover {
+  background: #14291b;
+  color: var(--bright);
+  border-color: var(--green);
+}
+
+.command-button.active,
+.filter-button.active,
+.command-button[aria-pressed=true],
+.filter-button[aria-pressed=true] {
+  background: #315b3e;
+  color: var(--bright);
+  border-color: var(--green);
+}
+
+.action-button {
+  color: var(--amber);
+  border-color: var(--amber);
+}
+
+/* ============================================================
+   PRIMARY OPERATIONS GRID
+   ============================================================ */
+
+.operations-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(250px, 23%)
+    minmax(0, 1fr)
+    minmax(250px, 23%);
+
+  align-items: stretch;
+  gap: 8px;
+
+  height: clamp(570px, 59vh, 850px);
+}
+
+/* ============================================================
+   COMMON PANEL
+   ============================================================ */
+
+.console-panel {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+
+  background: var(--panel);
+  border: 1px solid var(--edge);
+}
+
+.console-panel:hover {
+  border-color: #4a8b5c;
+}
+
+.panel-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+  min-height: 36px;
+  padding: 6px 10px;
+
+  border-bottom: 1px solid var(--edge);
+  background: var(--header);
+}
+
+.panel-header h2 {
+  margin: 0;
+  color: var(--green);
+}
+
+.panel-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.panel-header-actions span {
+  font-size: 10px;
+}
+
+.panel-action {
+  padding: 3px 6px;
+}
+
+/* ============================================================
+   PANEL CONTENT
+   ============================================================ */
+
+.panel-content {
+  flex: 1;
+  min-height: 0;
+
+  overflow: auto;
+  padding: 10px;
+}
+
+.panel-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 5px 10px;
+  flex: none;
+
+  padding: 6px 10px;
+
+  border-top: 1px solid #1c3826;
+  background: #07120b;
+
+  color: #688572;
+  font-size: 10px;
+}
+
+/* ============================================================
+   NEWSWIRE
+   ============================================================ */
+
+.feed-placeholder,
+.waiting-message {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.feed-placeholder strong {
+  color: var(--amber);
+}
+
+.panel-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 4px;
+  padding: 7px 8px;
+
+  border-bottom: 1px solid #1c3826;
+}
+
+.filter-button {
+  font-size: 10px;
+  padding: 4px 7px;
+}
+
+.news-feed {
+  padding: 0;
+}
+
+.news-feed .feed-placeholder {
+  padding: 10px;
+}
+
+.news-item {
+  padding: 11px 10px;
+  border-bottom: 1px solid #1c3826;
+}
+
+.news-item-title {
+  color: var(--bright);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.news-item-summary {
+  font-size: 11px;
+}
+
+.news-item-meta {
+  color: #688572;
+  font-size: 10px;
+}
+
+/* ============================================================
+   GLOBAL TACTICAL MAP
+   ============================================================ */
+
+.map-toolbar {
+  flex: none;
+  padding: 7px 10px;
+  border-bottom: 1px solid #1c3826;
+}
+
+.map-layer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
+.layer-toggle {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.layer-toggle:has(input:disabled) {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.layer-toggle input {
+  margin: 0;
+  width: 13px;
+  height: 13px;
+
+  accent-color: var(--green);
+}
+
+.layer-toggle input:checked + span {
+  color: var(--green);
+}
+
+/* MAP CONTAINER */
+
+.map-container {
+  display: flex;
+  flex: 1;
+
+  min-height: 0;
+
+  position: relative;
+  overflow: hidden;
+
+  background: #030a06;
+}
+
+.world-map {
+  flex: 1;
+
+  height: 100%;
+  min-height: 0;
+
+  background: #030a06;
+}
+
+.map-placeholder {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 12px;
+  padding: 20px;
+
+  text-align: center;
+  color: var(--amber);
+
+  background: #030a06;
+}
+
+.map-placeholder strong {
+  color: var(--green);
+}
+
+/* MAP COORDINATES */
+
+.map-coordinate-display {
+  position: absolute;
+  z-index: 500;
+
+  left: 10px;
+  bottom: 10px;
+  right: 10px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  gap: 5px;
+  padding: 4px 7px;
+
+  pointer-events: none;
+
+  color: var(--green);
+  font-size: 10px;
+
+  background: #030a06db;
+  border: 1px solid #1c3826;
+}
+
+/* MAP COLORING */
+
+.world-map .leaflet-tile-pane {
+  filter:
+    grayscale(1)
+    sepia(1)
+    hue-rotate(65deg)
+    saturate(1.35)
+    brightness(0.85);
+}
+
+.world-map .leaflet-control-zoom a {
+  color: var(--green) !important;
+  background: #0a1a0e !important;
+  border-color: var(--edge) !important;
+}
+
+.world-map .leaflet-control-attribution {
+  background: #050b08dd !important;
+  color: var(--muted) !important;
+  font-size: 9px !important;
+}
+
+.world-map .leaflet-control-attribution a {
+  color: var(--green) !important;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  border-radius: 0 !important;
+  color: var(--text) !important;
+  background: #0d1b12 !important;
+}
+
+.ww-quake-popup {
+  font: 11px/1.6 var(--font);
+  min-width: 180px;
+}
+
+.ww-quake-popup a {
+  font-weight: bold;
+}
+
+/* ============================================================
+   EVENT MONITOR
+   ============================================================ */
+
+.event-sections {
+  flex: 1;
+
+  overflow: auto;
+  min-height: 0;
+}
+
+.event-category {
+  border-bottom: 1px solid var(--edge);
+}
+
+.event-category-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 5px;
+  padding: 9px 10px;
+
+  background: #0d2113;
+  border-bottom: 1px solid #1c3826;
+}
+
+.event-category-header h3 {
+  margin: 0;
+  color: var(--amber);
+}
+
+.event-category-header span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.event-feed {
+  padding: 7px 10px;
+  min-height: 42px;
+}
+
+.event-item {
+  padding: 8px 0;
+  border-bottom: 1px dashed #1c3826;
+}
+
+.event-title {
+  margin-bottom: 5px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.event-meta {
+  color: #688572;
+  font-size: 10px;
+}
+
+.quake-locate-button {
+  margin-top: 7px;
+  font-size: 10px;
+  color: var(--green);
+}
+
+/* ============================================================
+   SECONDARY OPERATIONS GRID
+   ============================================================ */
+
+.secondary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 8px;
+}
+
+.secondary-panel {
+  min-height: 185px;
+}
+
+.secondary-panel p {
+  margin: 8px 0;
+
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.monitor-status-line {
+  color: var(--amber) !important;
+  font-weight: bold;
+}
+
+.external-monitor-link {
+  display: inline-block;
+
+  padding: 5px 7px;
+  margin-top: 6px;
+
+  border: 1px solid var(--edge);
+  font-size: 10px;
+}
+
+/* ============================================================
+   INFRASTRUCTURE
+   ============================================================ */
+
+.infrastructure-panel {
+  min-height: 125px;
+}
+
+.infrastructure-feed {
+  flex: 1;
+  padding: 10px;
+
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* ============================================================
+   SYSTEM FOOTER
+   ============================================================ */
+
+.system-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 7px 20px;
+  padding: 8px 12px;
+
+  border: 1px solid var(--edge);
+  background: #07110b;
+
+  color: #688572;
+  font-size: 10px;
+}
+
+.system-footer strong {
+  color: var(--green);
+}
+
+/* ============================================================
+   ORIGINAL PANEL EXPANSION
+   ============================================================ */
+
+.console-panel.panel-expanded {
+  position: fixed;
+  inset: 15px;
+
+  z-index: 2000;
+
+  width: auto;
+  height: auto;
+
+  background: var(--panel);
+  border: 2px solid var(--green);
+
+  box-shadow:
+    0 0 0 100vmax #000d;
+}
+
+body.panel-is-expanded {
+  overflow: hidden;
+}
+
+/* ============================================================
+   EVENT DETAILS DIALOG
+   ============================================================ */
+
+.console-dialog {
+  padding: 0;
+
+  width: min(
+    720px,
+    calc(100vw - 30px)
+  );
+
+  max-height: 85vh;
+
+  border: 2px solid var(--edge);
+  border-radius: 0;
+
+  color: var(--text);
+  background: var(--panel);
+}
+
+.console-dialog::backdrop {
+  background: #000d;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--edge);
+}
+
+.dialog-header h2 {
+  margin: 0;
+  color: var(--green);
+}
+
+.dialog-content {
+  overflow: auto;
+  max-height: 65vh;
+
+  padding: 15px;
+
+  white-space: pre-wrap;
+}
+
+/* ============================================================
+   NOTIFICATIONS
+   ============================================================ */
+
+.system-notification {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+
+  z-index: 3000;
+
+  max-width: min(
+    420px,
+    calc(100vw - 36px)
+  );
+
+  padding: 12px 15px;
+
+  border: 1px solid var(--green);
+
+  background: #112317;
+  color: var(--bright);
+
+  box-shadow: 0 0 20px #000b;
+}
+
+.system-notification[hidden] {
+  display: none;
+}
+
+.notification-warning {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.notification-error {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* ============================================================
+   SCROLLBARS
+   ============================================================ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--edge)
+    var(--panel);
+}
+
+/* ============================================================
+   ORIGINAL RESPONSIVE RULES
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+  .system-header {
+    flex-wrap: wrap;
+  }
+
+  .header-status {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .operations-grid {
+    grid-template-columns:
+      minmax(250px, 1fr)
+      minmax(0, 1.5fr);
+
+    grid-template-areas:
+      "news map"
+      "events events";
+
+    height: auto;
+  }
+
+  .news-panel {
+    grid-area: news;
+    height: 570px;
+  }
+
+  .map-panel {
+    grid-area: map;
+    height: 570px;
+  }
+
+  .events-panel {
+    grid-area: events;
+    height: 350px;
+  }
+
+  .secondary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .console-shell {
+    padding: 5px;
+    gap: 6px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .system-emblem {
+    width: 34px;
+    height: 34px;
+  }
+
+  .operations-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .map-panel {
+    order: 0;
+    height: 420px;
+  }
+
+  .news-panel {
+    order: 1;
+    height: 450px;
+  }
+
+  .events-panel {
+    order: 2;
+    height: 400px;
+  }
+
+  .secondary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .console-panel.panel-expanded {
+    inset: 5px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+}
+
+/* ============================================================
+   NEW // FULL PANEL EXPANSION REPAIR
+
+   Fixes conflict with viewport-locked index.html.
+
+   Applies to:
+     SPACE / ORBITAL OPERATIONS
+     AIR / AVIATION
+     SEA / MARITIME
+     COMMS / NETWORKS
+     NEWSWIRE
+     MAP
+     EVENT MONITOR
+     INFRASTRUCTURE
+
+   The normal compact display remains unchanged.
+   ============================================================ */
+
+#worldwatch-app .console-panel.panel-expanded {
+
+  /* Override the grid's normal panel sizing. */
+
+  position: fixed !important;
+
+  inset: 12px !important;
+
+  z-index: 4000 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+
+  width: auto !important;
+  height: auto !important;
+
+  min-width: 0 !important;
+  min-height: 0 !important;
+
+  max-width: none !important;
+  max-height: none !important;
+
+  margin: 0 !important;
+
+  overflow: hidden !important;
+
+  background: var(--panel);
+
+  border: 2px solid var(--green);
+
+  box-shadow:
+    0 0 0 100vmax #000d;
+
+}
+
+/* Expanded panel body receives all available space. */
+
+#worldwatch-app .console-panel.panel-expanded > .panel-content {
+
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  max-height: none !important;
+
+  overflow-y: auto !important;
+
+}
+
+/* Also preserve expanded maps and event feeds. */
+
+#worldwatch-app .console-panel.panel-expanded > .event-sections,
+#worldwatch-app .console-panel.panel-expanded > .map-container,
+#worldwatch-app .console-panel.panel-expanded > .infrastructure-feed {
+
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+}
+
+/* Smaller padding around expanded panels on narrow screens. */
+
+@media (max-width: 700px) {
+
+  #worldwatch-app .console-panel.panel-expanded {
+    inset: 5px !important;
+  }
+
+}
+
+/* ============================================================
+   END // WORLDWATCH DISPLAY STYLES
+   ============================================================ */
